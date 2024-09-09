@@ -23,11 +23,11 @@ public class OrderItem {
         calculateOrderPrice();
     }
 
-    public void calculateOrderPrice() {
-        this.orderPrice = product.getPrice() * quantity;
-    }
-
     public void setOrder(Orders order) {
         this.order = order;
+    }
+
+    private void calculateOrderPrice() {
+        this.orderPrice = product.getPrice() * quantity;
     }
 }
