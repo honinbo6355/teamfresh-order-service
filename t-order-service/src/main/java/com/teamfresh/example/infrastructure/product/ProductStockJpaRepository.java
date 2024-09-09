@@ -12,4 +12,6 @@ public interface ProductStockJpaRepository extends JpaRepository<ProductStockEnt
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(value = "select a from ProductStockEntity a where a.product.id = :productId")
     ProductStockEntity findByProductIdWithPessimisticLock(long productId);
+
+    ProductStockEntity findByProductId(long productId);
 }

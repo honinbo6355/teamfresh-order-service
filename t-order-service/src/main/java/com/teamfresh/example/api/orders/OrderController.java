@@ -19,7 +19,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping
+    @PostMapping("checkout")
     public ResponseEntity<BasicResponse<OrderResponse>> checkout(@RequestBody OrderRequest orderRequest) {
         String orderNum = orderService.checkout(orderRequest);
 

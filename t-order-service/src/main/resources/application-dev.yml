@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  h2:
+    console:
+      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
+      path: /h2-console  # H2 Console의 Path
+      settings:
+        web-allow-others: true
+  datasource:
+    url: jdbc:h2:mem:teamfresh;DATABASE_TO_UPPER=FALSE;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS test
+#    url: jdbc:h2:~/teamfresh;DATABASE_TO_UPPER=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS test  # H2 접속 정보
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    defer-datasource-initialization: true
+    defer-datasource:
+      database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+
+#p6spy query logging
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
