@@ -18,6 +18,10 @@ public record OrderRequest(
             throw new CustomException(ErrorCode.EMPTY_ADDRESS);
         }
 
+        if (orderInfos == null || orderInfos.isEmpty()) {
+            throw new CustomException(ErrorCode.EMPTY_ORDER_INFO);
+        }
+
         for (OrderRequestDto orderInfo : orderInfos) {
             if (orderInfo.productName() == null || orderInfo.productName().isBlank()) {
                 throw new CustomException(ErrorCode.EMPTY_PRODUCT_NAME);

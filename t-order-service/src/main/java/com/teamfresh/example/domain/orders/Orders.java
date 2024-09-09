@@ -23,16 +23,16 @@ public class Orders {
         this.generateOrderNum();
     }
 
-    public void generateOrderNum() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd-HHmmssSS");
-        this.orderNum = now.format(formatter);
-    }
-
     public void addItem(OrderItem orderItem) {
         calculateOrderPrice(orderItem);
     }
 
+    private void generateOrderNum() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd-HHmmssSS");
+        this.orderNum = now.format(formatter);
+    }
+    
     private void calculateOrderPrice(OrderItem orderItem) {
         orderPrice += orderItem.getOrderPrice();
     }

@@ -116,6 +116,20 @@ public class OrderServiceTest {
     }
 
     @Test
+    @DisplayName("주문시 주문 아이템 정보가 비어있을경우")
+    public void checkout_when_empty_order_info() throws Exception {
+        // given
+        String userName = "김프레시";
+        String address = "서울특별시 송파구 송파대로 111 201동 803호";
+        OrderRequest orderRequest = new OrderRequest(userName, address, null);
+
+        // when & then
+        Assertions.assertThatThrownBy(() -> orderService.checkout(orderRequest))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.EMPTY_ORDER_INFO.getMessage());
+    }
+
+    @Test
     @DisplayName("주문시 상품명이 비어있을경우")
     public void checkout_when_empty_product_name() throws Exception {
         // given

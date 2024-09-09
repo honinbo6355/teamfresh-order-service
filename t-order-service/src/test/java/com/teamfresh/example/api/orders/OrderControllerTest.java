@@ -96,6 +96,29 @@ public class OrderControllerTest {
     public void checkout_when_empty_address() throws Exception {
         // given
         String userName = "김프레시";
+        String address = "서울특별시 송파구 송파대로 111 201동 803호";
+
+        OrderRequest orderRequest = new OrderRequest(userName, address, null);
+
+        // when
+        willThrow(new CustomException(ErrorCode.EMPTY_ORDER_INFO)).given(orderService).checkout(any(OrderRequest.class));
+
+        // then
+        mockMvc.perform(post("/api/order/checkout")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(orderRequest)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error.code").value(ErrorCode.EMPTY_ORDER_INFO.getCode()))
+                .andExpect(jsonPath("$.error.message").value(ErrorCode.EMPTY_ORDER_INFO.getMessage()));
+    }
+
+    @Test
+    @DisplayName("주문시 주문 아이템 정보가 비어있을경우")
+    public void checkout_when_empty_order_info() throws Exception {
+        // given
+        String userName = "김프레시";
         String address = null;
 
         List<OrderRequestDto> orderInfos = Arrays.asList(
