@@ -29,7 +29,7 @@ public class OrderItemRepositoryImplTest {
     @DisplayName("주문 아이템 등록")
     public void save() {
         // given
-        OrderEntity savedOrderEntity = orderJpaRepository.save(new OrderEntity(null, 33600L, "김프레시", "서울특별시 송파구 송파대로 111 201동 803호", "240909-18205303"));
+        OrderEntity savedOrderEntity = orderJpaRepository.save(new OrderEntity(null, "240909-18205303", 33600L, "김프레시", "서울특별시 송파구 송파대로 111 201동 803호"));
         ProductEntity savedProductEntity = productJpaRepository.save(new ProductEntity(null, "에센셜 탱크 탑[다크 크레이]", 11200));
         OrderItem orderItem = new OrderItem(null, savedProductEntity.toDomain(), savedOrderEntity.toDomain(), 3, 33600L, null, null);
 

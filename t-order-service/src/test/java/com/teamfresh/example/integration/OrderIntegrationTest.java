@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teamfresh.example.api.orders.dto.OrderRequest;
 import com.teamfresh.example.api.orders.dto.OrderRequestDto;
 import com.teamfresh.example.domain.orders.OrderService;
+import com.teamfresh.example.infrastructure.orders.OrderEntity;
+import com.teamfresh.example.infrastructure.orders.OrderItemEntity;
+import com.teamfresh.example.infrastructure.orders.OrderItemJpaRepository;
+import com.teamfresh.example.infrastructure.orders.OrderJpaRepository;
 import com.teamfresh.example.infrastructure.product.ProductStockEntity;
 import com.teamfresh.example.infrastructure.product.ProductStockJpaRepository;
 import org.assertj.core.api.Assertions;
@@ -46,6 +50,12 @@ public class OrderIntegrationTest {
     @Autowired
     private ProductStockJpaRepository productStockJpaRepository;
 
+    @Autowired
+    private OrderJpaRepository orderJpaRepository;
+
+    @Autowired
+    private OrderItemJpaRepository orderItemJpaRepository;
+
     @Order(1)
     @Test
     @DisplayName("주문이 성공할 경우")
@@ -72,7 +82,9 @@ public class OrderIntegrationTest {
 
     @Order(2)
     @Test
-    @DisplayName("재고 12개인 상품을 유저 50명이 동시에 주문 테스트. 정확히 12개만 주문되는지 확인")
+    @DisplayName("재고 12개인 상품을 유저 50명이 동시에 주문 테스트" +
+            "유저당 상품 수량 1개씩 주문" +
+            "정확히 12명만 주문되는지 확인")
     public void checkout_when_concurrency() throws InterruptedException {
         // given
         int userCount = 50;
@@ -104,7 +116,12 @@ public class OrderIntegrationTest {
         latch.await();
 
         // then
+        List<OrderEntity> orderEntities = orderJpaRepository.findAll();
+        List<OrderItemEntity> orderItemEntities = orderItemJpaRepository.findAll();
         ProductStockEntity productStockEntity = productStockJpaRepository.findByProductId(productId);
+
         Assertions.assertThat(0).isEqualTo(productStockEntity.getStock());
+        Assertions.assertThat(12).isEqualTo(orderEntities.size());
+        Assertions.assertThat(12).isEqualTo(orderItemEntities.size());
     }
 }

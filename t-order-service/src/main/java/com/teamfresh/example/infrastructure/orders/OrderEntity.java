@@ -20,10 +20,10 @@ public class OrderEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String orderNum;
     private long orderPrice;
     private String userName;
     private String address;
-    private String orderNum;
 
     public Orders toDomain() {
         return new Orders(id, orderPrice, userName, address, orderNum, getCreatedAt(), getUpdatedAt());
@@ -32,10 +32,10 @@ public class OrderEntity extends BaseTimeEntity {
     public static OrderEntity toEntity(Orders order) {
         OrderEntity orderEntity = new OrderEntity(
                 order.getId(),
+                order.getOrderNum(),
                 order.getOrderPrice(),
                 order.getUserName(),
-                order.getAddress(),
-                order.getOrderNum()
+                order.getAddress()
         );
 
         if (order.getId() == null) {
